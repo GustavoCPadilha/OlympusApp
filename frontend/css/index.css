@@ -1,0 +1,59 @@
+main {
+    max-width: 1100px;
+    margin: 24px auto;
+}
+.hero {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    background: linear-gradient(90deg, rgba(140,3,14,0.06), rgba(140,3,28,0.03));
+}
+.hero img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.card {
+    background: white;
+    padding: 14px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06); 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.card h3 {
+    font-size: 16px;
+    color: var(--cor-1);
+}
+.card p {
+    color: #444;
+    font-size: 14px;
+}
+.card a {
+    margin-top: auto;
+    display: inline-block;
+    padding: 8px 12px;
+    background: var(--cor-1);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: .25s ease;
+}
+.card a:hover {
+    transform: scale(1.05);
+}
+@media (max-width:600px){
+    .hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

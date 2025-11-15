@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comunidade, FAQ e Suporte - Olympus App</title>
+    <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/padrao.css"> 
+    <link rel="stylesheet" href="css/comunidade.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Olympus App</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="exercicios.html">Exercícios</a>
+            <a href="alimentacao.html">Alimentação</a>
+            <a href="planilhas.html">Planilhas</a>
+            <a href="medidas.html">Medidas</a>
+            <a href="consultoria.html">Consultoria</a>
+            <a href="comunidade.html">Suporte</a> <a href="profile.html">Perfil</a>
+            <a href="login.html">Sair</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Comunidade e Suporte</h1>
+
+        <div class="contato-buttons">
+            <a href="#" class="action-button">
+                Entrar na Comunidade (Fórum/Chat)
+            </a>
+            <a href="mailto:suporte@olympusapp.com" class="action-button">
+                Contato Direto com Suporte Técnico
+            </a>
+        </div>
+        
+        <section class="faq-container">
+            <h2>Perguntas Frequentes (FAQ)</h2>
+
+            <div class="faq-item">
+                <button class="faq-pergunta">Como faço para rastrear minhas calorias?</button>
+                <div class="faq-resposta">
+                    <p>Você pode rastrear suas calorias na seção Alimentação. Basta inserir o nome do alimento/refeição e a quantidade de calorias (Kcal) para que o contador seja atualizado automaticamente.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-pergunta">Posso criar minhas próprias planilhas de treino?</button>
+                <div class="faq-resposta">
+                    <p>Sim! Na seção Planilhas, você pode criar, editar e organizar suas rotinas de treino, adicionando os exercícios da nossa lista ou exercícios personalizados.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-pergunta">O que devo fazer se encontrar um erro ou bug?</button>
+                <div class="faq-resposta">
+                    <p>Se você encontrar qualquer problema técnico, utilize o link de Contato Direto com Suporte Técnico acima (ou envie um e-mail para suporte@olympusapp.com) e descreva o erro em detalhes. Faremos o possível para resolver rapidamente!</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-pergunta">Como funciona a Consultoria?</button>
+                <div class="faq-resposta">
+                    <p>A Consultoria oferece acompanhamento personalizado de profissionais de fitness e nutrição. Você receberá planos de treino e dieta feitos sob medida, além de suporte para dúvidas e ajustes.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <small>© <span id="year"></span> Olympus App</small>
+            <nav class="footer-links" aria-label="Links úteis">
+                <a href="sobre.html">Sobre</a>
+                <a href="termos.html">Termos</a>
+                <a href="privacidade.html">Privacidade</a>
+                <a href="cancelamentos.html">Cancelamentos</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Lógica para o Acordeão da FAQ
+        const faqPerguntas = document.querySelectorAll('.faq-pergunta');
+
+        faqPerguntas.forEach(pergunta => {
+            pergunta.addEventListener('click', () => {
+                const resposta = pergunta.nextElementSibling;
+                
+                // Fecha outras respostas abertas
+                faqPerguntas.forEach(otherPergunta => {
+                    if (otherPergunta !== pergunta && otherPergunta.classList.contains('active')) {
+                        otherPergunta.classList.remove('active');
+                        otherPergunta.nextElementSibling.classList.remove('active');
+                    }
+                });
+
+                // Alterna a resposta atual
+                pergunta.classList.toggle('active');
+                resposta.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
