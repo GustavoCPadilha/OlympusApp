@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Planilhas de Treino - Olympus App</title>
+    <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/padrao.css"> 
+    <link rel="stylesheet" href="css/planilhas.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Olympus App</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="exercicios.html">Exercícios</a>
+            <a href="alimentacao.html">Alimentação</a>
+            <a href="planilhas.html">Planilhas</a>
+            <a href="profile.html">Perfil</a>
+            <a href="login.html">Sair</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Planilhas de Treino</h1>
+
+        <a href="#" class="btn-criar-plano">+ Criar Nova Planilha</a>
+
+        <div class="cards-container" id="cardsPadrao">
+
+            <!-- PLANO PADRÃO 1 -->
+            <div class="card">
+                <h3>Força e Hipertrofia (Full-Body)</h3>
+                <span class="info-plano">Duração: 6 Semanas</span>
+                <span class="info-plano">Foco: Ganho de Massa e Força</span>
+                <p>Plano dividido em 3 dias (A, B, C) com foco em exercícios compostos e alta intensidade.</p>
+                <a href="treino.html?planoPadrao=1">Visualizar e Iniciar</a>
+            </div>
+
+            <!-- PLANO PADRÃO 2 -->
+            <div class="card">
+                <h3>Fisiculturismo Clássico (ABCDE)</h3>
+                <span class="info-plano">Duração: Ilimitada</span>
+                <span class="info-plano">Foco: Definição e Volume Muscular</span>
+                <p>Treino segmentado por grupos musculares para exaustão máxima.</p>
+                <a href="treino.html?planoPadrao=2">Visualizar e Iniciar</a>
+            </div>
+
+            <!-- PLANO PADRÃO 3 -->
+            <div class="card">
+                <h3>Resistência e Cardio</h3>
+                <span class="info-plano">Duração: 4 Semanas</span>
+                <span class="info-plano">Foco: Queima Calórica</span>
+                <p>Combinação de treinos HIIT, circuitos de resistência e exercícios funcionais.</p>
+                <a href="treino.html?planoPadrao=3">Visualizar e Iniciar</a>
+            </div>
+
+        </div>
+
+        <h2 style="margin-top: 40px;">Minhas Planilhas</h2>
+        <div class="cards-container" id="cardsUsuario"></div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <small>© <span id="year"></span> Olympus App</small>
+            <nav class="footer-links" aria-label="Links úteis">
+                <a href="sobre.html">Sobre</a>
+                <a href="termos.html">Termos</a>
+                <a href="privacidade.html">Privacidade</a>
+                <a href="cancelamentos.html">Cancelamentos</a>
+            </nav>
+        </div>
+    </footer>
+<script src="javascript/planilhas.js"></script>
+</body>
+</html>

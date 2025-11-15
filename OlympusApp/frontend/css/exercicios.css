@@ -1,0 +1,151 @@
+body {
+    color: #111;
+}
+
+/* Layout principal */
+.container {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 72px);
+}
+
+.sidebar {
+    width: 220px;
+    background: #fff;
+    padding: 20px;
+    position: fixed;
+    height: calc(100vh - 72px);
+    top: 72px;
+    left: 0;
+    overflow-y: auto;
+    border-right: 1px solid rgba(0,0,0,0.04);
+}
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sidebar a {
+    display:block;
+    padding: 10px 12px;
+    color: var(--cor-1, #8C030E);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.18s, color 0.18s, transform 0.12s;
+}
+.sidebar a:hover {
+    background: var(--cor-2, #8C031C);
+    color: #fff;
+    transform: translateX(3px);
+}
+
+main {
+    margin-left: 240px; /* espaço para sidebar */
+    padding: 24px 18px;
+    width: calc(100% - 240px);
+    min-height: calc(100vh - 72px);
+}
+
+.page-title {
+    font-size: 28px;
+    margin: 6px 0 18px 0;
+    color: var(--cor-3, #40010D);
+    letter-spacing: -0.2px;
+}
+
+/* Sections (cards) */
+section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 18px rgba(18,18,18,0.04);
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+section h2 {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    color: var(--cor-1, #8C030E);
+}
+
+/* Lista de exercícios */
+.exercicios-lista { display:flex; flex-direction:column; gap:12px; width:100%; }
+
+.exercicio {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    background: linear-gradient(180deg,#fff,#fbfbfb);
+    border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* Botão ocupa toda a largura e tem padding generoso */
+.exercicio-btn {
+    width: 100%;
+    display: block;
+    padding: 14px 18px;
+    text-align: left;
+    background: linear-gradient(90deg, var(--cor-1, #8C030E), var(--cor-2, #8C031C));
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border-radius: 0;
+}
+
+.exercicio-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(140,3,14,0.12);
+}
+
+/* Conteúdo interno: GIF + info, lado a lado em desktop */
+.exercicio-content {
+    display: none;
+    padding: 16px;
+    background: #fafafa;
+    gap: 18px;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.exercicio-content.active { display: flex; }
+
+/* GIF area */
+.exercicio-gif {
+    flex: 0 0 280px;
+    max-width: 280px;
+    text-align: center;
+}
+.exercicio-gif img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+/* Info area */
+.exercicio-info {
+    flex: 1;
+    min-width: 0;
+}
+.exercicio-info h3 { margin-top: 0; color: var(--cor-1, #8C030E); }
+.exercicio-info ol { margin: 8px 0 0 18px; }
+.exercicio-info p { margin: 8px 0 0; color: #444; }
+
+/* Small screens: empilha, sidebar vira topo */
+@media (max-width: 900px) {
+    .sidebar { position: static; width: 100%; height: auto; box-shadow: none; border-right: none; top: auto; }
+    main { margin-left: 0; width: 100%; padding: 16px; }
+    .container { flex-direction: column; }
+    .exercicio-content { flex-direction: column; }
+    .exercicio-gif { width: 100%; max-width: 100%; }
+}
+
+/* Pequeno ajuste visual para botões e conteúdos */
+.exercicio + .exercicio { margin-top: 6px; }

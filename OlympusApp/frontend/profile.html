@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Olympus App</title>
+    <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/padrao.css">
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <header>
+        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Olympus App</a></h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="exercicios.html">Exercícios</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </header>
+
+    <main class="profile-main">
+        <aside class="profile-aside">
+            <button class="tab-btn active" data-target="personalizacao">Personalização</button>
+            <button class="tab-btn" data-target="configuracoes">Configurações</button>
+            <button class="tab-btn" data-target="estatisticas">Estatísticas</button>
+        </aside>
+
+        <section class="profile-content">
+            <div id="personalizacao" class="tab-panel active">
+                <h2>Personalização</h2>
+                <form id="personalizationForm">
+                    <label for="displayName">Nome de exibição</label>
+                    <input id="displayName" name="displayName" type="text" placeholder="Seu nome" />
+
+                    <label for="avatarInput">Avatar (GIF/PNG/JPG)</label>
+                    <input id="avatarInput" name="avatarInput" type="file" accept="image/*" />
+                    <div class="avatar-preview">
+                        <img id="avatarPreview" src="imgs/placeholder.png" alt="Avatar preview">
+                    </div>
+
+                    <label for="themeColor">Cor do tema</label>
+                    <input id="themeColor" name="themeColor" type="color" value="#8C030E" />
+
+                    <button type="submit" class="input-submit">Salvar Personalização</button>
+                </form>
+            </div>
+
+            <div id="configuracoes" class="tab-panel">
+                <h2>Configurações</h2>
+                <form id="configForm">
+                    <label><input type="checkbox" id="notif" /> Notificações ativadas</label>
+                    <label><input type="checkbox" id="publicProfile" /> Perfil público</label>
+
+                    <h3>Alterar senha</h3>
+                    <label for="oldPwd">Senha atual</label>
+                    <input id="oldPwd" type="password" />
+                    <label for="newPwd">Nova senha</label>
+                    <input id="newPwd" type="password" />
+                    <button type="submit" class="input-submit">Salvar Configurações</button>
+                </form>
+            </div>
+
+            <div id="estatisticas" class="tab-panel">
+                <h2>Estatísticas</h2>
+
+                <section class="estatistica-section">
+                    <h3>Histórico de Treino</h3>
+                    <ul id="trainingHistory">
+                        <li>2025-01-10 — Peito: Supino Reto — 4x10</li>
+                        <li>2025-01-12 — Costas: Remada — 4x8</li>
+                    </ul>
+                </section>
+
+                <section class="estatistica-section">
+                    <h3>Histórico de Alimentação</h3>
+                    <ul id="foodHistory">
+                        <li>2025-01-10 — 08:00 — Omelete + Aveia</li>
+                        <li>2025-01-10 — 12:30 — Arroz, frango e salada</li>
+                    </ul>
+                </section>
+
+                <section class="estatistica-section">
+                    <h3>Medidas Corporais</h3>
+                    <form id="measurementForm">
+                        <label for="mDate">Data</label>
+                        <input type="date" id="mDate" required />
+                        <label for="mWeight">Peso (kg)</label>
+                        <input type="number" id="mWeight" step="0.1" required />
+                        <label for="mWaist">Cintura (cm)</label>
+                        <input type="number" id="mWaist" step="0.1" />
+                        <label for="mChest">Peito (cm)</label>
+                        <input type="number" id="mChest" step="0.1" />
+                        <button type="submit" class="input-submit">Adicionar Medida</button>
+                    </form>
+
+                    <table class="measurements-table">
+                        <thead>
+                            <tr><th>Data</th><th>Peso</th><th>Cintura</th><th>Peito</th><th>Ações</th></tr>
+                        </thead>
+                        <tbody id="measurementsTableBody"></tbody>
+                    </table>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer-container">
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <small>© <span id="year"></span> Olympus App</small>
+                <nav class="footer-links" aria-label="Links úteis">
+                    <a href="sobre.html">Sobre</a>
+                    <a href="termos.html">Termos</a>
+                    <a href="privacidade.html">Privacidade</a>
+                    <a href="cancelamentos.html">Cancelamentos</a>
+                </nav>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <script src="javascript/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Olympus App</title>
+    <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/padrao.css">
+    <link rel="stylesheet" href="css/cadastro-login.css">
+</head>
+<body>
+    <div>
+        <header>
+            <h1>Olympus App</h1>
+        </header>
+        <h1 style="margin-bottom: 30px; text-align: center; font-size: 30px;">Vamos completar<br>o seu cadastro</h1>
+            <form action="" method="post">
+                <label for="dataNasc">Nome</label>
+                <input type="text" id="username" name="username" required>
+                <div class="sexo-escolha">
+                    <input type="radio" id="masculino" name="sexo" value="masculino">
+                    <label for="masculino">
+                    <img src="icons/male.png" alt="Homem">Sexo<br>Masculino
+                    </label>
+
+                    <input type="radio" id="feminino" name="sexo" value="feminino">
+                    <label for="feminino">
+                    <img src="icons/female.png" alt="Mulher">Sexo<br>Feminino
+                    </label>
+                </div>
+                <label for="dataNasc">Altura</label>
+                <input type="number" id="altura" name="altura" placeholder="(Metros)" step="0.01" min="1.00" max="2.50" required>
+                <label for="dataNasc">Peso</label>
+                <input type="number" id="peso" name="peso" placeholder="(KG)" step="0.1" min="20" max="300" required>
+                <label for="dataNasc">Data de Nascimento</label>
+                <input type="date" name="dataNasc" id="dataNasc" required>
+
+                <input class="input-submit" type="submit" value="Finalizar Cadastro">
+            </form>
+            
+            <p>Já tem uma conta? <a href="login.html">Faça Login</a></p>
+    </div>
+</body>
+</html>

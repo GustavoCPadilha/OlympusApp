@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Título do Post - Olympus App</title>
+  <link rel="shortcut icon" href="../imgs/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="../css/padrao.css">
+  <link rel="stylesheet" href="../css/blog.css">
+</head>
+<body>
+  <header>
+    <h1><a href="../index.html" style="text-decoration:none;color:inherit;">Olympus App</a></h1>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../blog.html">Blog</a>
+      <a href="../exercicios.html">Exercícios</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <article class="post">
+      <div class="kicker">Categoria exemplo</div>
+      <h2>Título do Post</h2>
+      <div class="meta">Categoria · 2025-11-04 · 4 min</div>
+
+      <img class="hero" src="../imgs/hero-exemplo.jpg" alt="Imagem destaque">
+
+      <section class="post-content">
+        <p>Aqui entra o conteúdo do post. Use este template: Ctrl+C / Ctrl+V e altere TÍTULO, DATA, CATEGORIA, IMAGENS e o conteúdo abaixo.</p>
+
+        <h3>Subtítulo</h3>
+        <p>Parágrafo de exemplo.</p>
+
+        <blockquote>Trecho de destaque ou citação.</blockquote>
+      </section>
+
+      <div class="post-tags">
+        <span class="tag">treino</span>
+        <span class="tag">hipertrofia</span>
+      </div>
+
+      <div class="author-box">
+        <img src="../imgs/autor-placeholder.jpg" alt="Autor">
+        <div>
+          <p class="meta">Nome do Autor</p>
+          <p class="meta" style="font-size:13px;color:#6b7280;margin-top:4px;">Breve descrição do autor.</p>
+        </div>
+      </div>
+
+      <p style="margin-top:14px;"><a href="../blog.html">← Voltar ao blog</a></p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <small>© <span id="year"></span> Olympus App</small>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
