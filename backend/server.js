@@ -7,13 +7,16 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const db = require('./db');
-require('dotenv').config();
 
 
 app.use(express.json());
 app.use(cors())
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
+
+// Startup identification log to help debugging which file/version is running
+console.log(`Starting backend server from file: ${__filename}`);
+
 
 // Rota GET - Listar usuários
 app.get('/buscaUsuario', (req, res) => {
@@ -296,11 +299,12 @@ app.get('/alimentos', (req, res) => {
 });
 
 // Rota que busca os exercícios do usuário logado
-app.get("/exerciciosDoUsuario/:id_usuario", (req, res) => {
+app.get('/exerciciosDoUsuario/:id_usuario', (req, res) => {
   const { id_usuario } = req.params;
 
+  // Busca a planilha ativa do usuário
   const sqlPlanilha = `
-    SELECT id_planilhaTreino 
+    SELECT id_planilhaTreino
     FROM planilhaTreino
     WHERE id_usuario = ? AND ativa_planilhaTreino = 1
   `;
@@ -309,21 +313,65 @@ app.get("/exerciciosDoUsuario/:id_usuario", (req, res) => {
     if (err) return res.status(500).json({ erro: err.message });
 
     if (planilhaRows.length === 0) {
-      return res.status(404).json({ erro: "Planilha ativa não encontrada." });
+      return res.status(404).json({ erro: 'Planilha ativa não encontrada.' });
     }
 
     const id_planilha = planilhaRows[0].id_planilhaTreino;
 
+    // A tabela `exercicio` não possui id_planilhaTreino na estrutura SQL,
+    // então para recuperar os exercícios vinculados à planilha devemos
+    // consultar a tabela `treino` e juntar com `exercicio`.
     const sqlExercicios = `
-      SELECT id_exercicio, nome_exercicio 
-      FROM exercicio
-      WHERE id_planilhaTreino = ?
+      SELECT DISTINCT e.id_exercicio, e.nome_exercicio
+      FROM treino t
+      JOIN exercicio e ON t.id_exercicio = e.id_exercicio
+      WHERE t.id_planilhaTreino = ?
     `;
 
     db.query(sqlExercicios, [id_planilha], (err, exerciciosRows) => {
       if (err) return res.status(500).json({ erro: err.message });
       res.json(exerciciosRows);
     });
+  });
+});
+
+// Rota GET - Buscar treinos (alias usado pelo frontend)
+app.get('/buscaTreinosDaPlanilha', (req, res) => {
+  const { id_planilha } = req.query;
+  if (!id_planilha) return res.status(400).json({ error: 'Informe id_planilha' });
+
+  const sql = `
+    SELECT 
+      t.id_treino,
+      t.id_planilhaTreino,
+      t.id_exercicio,
+      e.nome_exercicio,
+      t.series,
+      t.repeticoes_treino,
+      t.carga_treino
+    FROM treino t
+    JOIN exercicio e ON t.id_exercicio = e.id_exercicio
+    WHERE t.id_planilhaTreino = ?
+  `;
+
+  db.query(sql, [id_planilha], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+// Rota POST - Cadastrar histórico de treino (usada pelo frontend ao marcar séries)
+app.post('/cadastraHistoricoTreino', (req, res) => {
+  const { id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada } = req.body;
+
+  if (!id_usuario || !id_exercicio || !dia_historicoTreino || !series_feitas || !repeticoes_feitas) {
+    return res.status(400).json({ error: 'Campos obrigatórios ausentes' });
+  }
+
+  const sql = `INSERT INTO historicoTreino (id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada) VALUES (?, ?, ?, ?, ?, ?)`;
+  db.query(sql, [id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada || 0], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.status(201).json({ message: 'Histórico de treino registrado', id: result.insertId });
   });
 });
 
@@ -440,6 +488,62 @@ app.post('/cadastraPlanilhaTreino', (req, res) => {
     }
     res.status(201).json({ message: 'Planilha de treino registrada com sucesso', id: result.insertId });
   });
+});
+
+// ROTA POST - Cadastrar múltiplos treinos (exercícios vinculados a uma planilha)
+app.post('/cadastraTreinos', async (req, res) => {
+  const { id_planilhaTreino, treinos } = req.body;
+
+  if (!id_planilhaTreino || !Array.isArray(treinos) || treinos.length === 0) {
+    return res.status(400).json({ error: 'Informe id_planilhaTreino e um array de treinos' });
+  }
+
+  const p = db.promise();
+  try {
+    const values = [];
+
+    for (const t of treinos) {
+      let id_ex = t.id_exercicio || null;
+
+      // If id_exercicio provided, verify it exists
+      if (id_ex) {
+        const [rows] = await p.query('SELECT id_exercicio FROM exercicio WHERE id_exercicio = ?', [id_ex]);
+        if (!rows || rows.length === 0) {
+          id_ex = null; // fallback to lookup by name
+        }
+      }
+
+      // If no valid id, try lookup by name
+      if (!id_ex && t.nome_exercicio) {
+        const [rows2] = await p.query('SELECT id_exercicio FROM exercicio WHERE nome_exercicio = ? LIMIT 1', [t.nome_exercicio]);
+        if (rows2 && rows2.length > 0) {
+          id_ex = rows2[0].id_exercicio;
+        }
+      }
+
+      // If still no id, insert new exercicio and use its id
+      if (!id_ex && t.nome_exercicio) {
+        const grupo = t.grupo_muscular || 'Geral';
+        const descricao = t.descricao_exercicio || '';
+        const [ins] = await p.query('INSERT INTO exercicio (nome_exercicio, grupo_muscular, descricao_exercicio) VALUES (?, ?, ?)', [t.nome_exercicio, grupo, descricao]);
+        id_ex = ins.insertId;
+      }
+
+      if (!id_ex) {
+        throw new Error('Não foi possível resolver id_exercicio para um dos treinos');
+      }
+
+      values.push([id_planilhaTreino, id_ex, t.series || 3, t.repeticoes_treino || 10, t.carga_treino || 0]);
+    }
+
+    if (values.length === 0) return res.status(400).json({ error: 'Nenhum treino válido para inserir' });
+
+    const [result] = await p.query('INSERT INTO treino (id_planilhaTreino, id_exercicio, series, repeticoes_treino, carga_treino) VALUES ?', [values]);
+    res.status(201).json({ message: 'Treinos cadastrados', inserted: result.affectedRows });
+  } catch (err) {
+    console.error('[ROTA] erro ao inserir treinos:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ROTA POST - Cadastro progressão de carga
@@ -579,6 +683,40 @@ app.post('/cadastraHistoricoTreino', (req, res) => {
     }
     res.status(201).json({ message: 'Histórico de treino registrado com sucesso', id: result.insertId });
   });
+});
+
+// ROTA GET - Buscar exercícios por grupo muscular
+app.get('/exerciciosPorGrupo', (req, res) => {
+  const { grupo_muscular } = req.query;
+  console.log(`[ROTA] GET /exerciciosPorGrupo - grupo_muscular=${grupo_muscular}`);
+
+  if (!grupo_muscular) {
+    // Se não especificar grupo, retorna todos os exercícios
+    db.query('SELECT * FROM exercicio ORDER BY grupo_muscular, nome_exercicio', (err, results) => {
+      if (err) {
+        console.error('[ROTA] erro ao buscar todos exercicios:', err.message);
+        return res.status(500).json({ error: err.message });
+      }
+      console.log(`[ROTA] retornando ${results.length} exercicios (todos)`);
+      res.json(results);
+    });
+    return;
+  }
+
+  // Se especificar grupo, retorna só daquele grupo
+  db.query('SELECT * FROM exercicio WHERE grupo_muscular = ? ORDER BY nome_exercicio', [grupo_muscular], (err, results) => {
+    if (err) {
+      console.error(`[ROTA] erro ao buscar exercicios grupo=${grupo_muscular}:`, err.message);
+      return res.status(500).json({ error: err.message });
+    }
+    console.log(`[ROTA] retornando ${results.length} exercicios para grupo=${grupo_muscular}`);
+    res.json(results);
+  });
+});
+
+// Simple status route to confirm the running server file and health
+app.get('/_status', (req, res) => {
+  res.json({ status: 'ok', file: __filename, pid: process.pid, time: new Date().toISOString() });
 });
 
 // Inicializa o servidor
