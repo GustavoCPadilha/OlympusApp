@@ -104,3 +104,105 @@ main h1 {
     background-color: var(--cor-3);
     transform: translateY(-2px);
 }
+
+/* Styles for criar-planilha.html */
+#form-planilha {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+
+#form-planilha label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 600;
+}
+
+#form-planilha input[type="text"],
+#form-planilha input[type="date"],
+#form-planilha input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    margin-top: 6px;
+    box-sizing: border-box;
+}
+
+#lista-exercicios, #selecionados {
+    background: #fafafa;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    margin-bottom: 14px;
+}
+
+.grupo {
+    margin-bottom: 12px;
+}
+.grupo h3 {
+    margin: 0 0 8px 0;
+    font-size: 1em;
+    text-transform: capitalize;
+}
+.grupo button {
+    display: inline-block;
+    margin: 6px 6px 6px 0;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: none;
+    background: linear-gradient(180deg, var(--cor-2), var(--cor-1));
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+.grupo button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+
+.sel-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+}
+.sel-item strong { flex: 1 1 auto; margin-right: 12px; }
+.sel-item input { width: 70px; }
+.sel-item .btn-remove {
+    background: transparent;
+    border: 1px solid #ddd;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#form-planilha button[type="submit"] {
+    display: inline-block;
+    padding: 12px 18px;
+    background: var(--cor-1);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 8px;
+}
+#form-planilha button[type="submit"]:hover { background: var(--cor-3); transform: translateY(-2px); }
+
+/* Two-column layout for larger screens */
+@media (min-width: 900px) {
+    #lista-exercicios { width: 62%; display: inline-block; vertical-align: top; }
+    #selecionados { width: 34%; display: inline-block; vertical-align: top; margin-left: 2%; }
+    #form-planilha { padding: 22px; }
+}
+
+/* Small tweaks for accessibility */
+#form-planilha input:focus, .grupo button:focus, .btn-remove:focus { outline: 3px solid rgba(140,3,28,0.12); }

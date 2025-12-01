@@ -14,16 +14,15 @@
             <h1>Olympus App</h1>
         </header>
         <h1 style="margin-bottom: 30px; text-align: center; font-size: 30px;">Vamos completar<br>o seu cadastro</h1>
-            <form action="" method="post">
+            <form id="completaForm">
                 <label for="dataNasc">Nome</label>
-                <input type="text" id="username" name="username" required>
                 <div class="sexo-escolha">
-                    <input type="radio" id="masculino" name="sexo" value="masculino">
+                    <input type="radio" id="masculino" name="sexo" value="M">
                     <label for="masculino">
                     <img src="icons/male.png" alt="Homem">Sexo<br>Masculino
                     </label>
 
-                    <input type="radio" id="feminino" name="sexo" value="feminino">
+                    <input type="radio" id="feminino" name="sexo" value="F">
                     <label for="feminino">
                     <img src="icons/female.png" alt="Mulher">Sexo<br>Feminino
                     </label>
@@ -37,6 +36,96 @@
 
                 <input class="input-submit" type="submit" value="Finalizar Cadastro">
             </form>
+            <script>
+            // Preenche campos com os dados do passo anterior (salvos em localStorage)
+            document.addEventListener('DOMContentLoaded', function() {
+                const parcialRaw = localStorage.getItem('cadastro_parcial');
+                console.log('DOMContentLoaded: parcial_raw =', parcialRaw);
+                
+                if (!parcialRaw) {
+                    console.warn('Nenhum cadastro_parcial encontrado, voltando para cadastro.html');
+                    // Se não houver dados, volta para a primeira etapa
+                    window.location.href = 'cadastro.html';
+                    return;
+                }
+
+                const parcial = JSON.parse(parcialRaw);
+                console.log('Dados parciais carregados:', parcial);
+                
+                // Não há campo #username neste formulário — os dados vêm de cadastro_parcial
+
+                document.getElementById('completaForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    console.log('Submit da form — iniciando cadastro...');
+
+                    const nome_usuario = parcial.nome_usuario;
+                    const email = parcial.email;
+                    const senha = parcial.senha;
+                    const data_nascimento = document.getElementById('dataNasc').value;
+                    const sexo = document.querySelector('input[name="sexo"]:checked') ? document.querySelector('input[name="sexo"]:checked').value : null;
+                    const altura = document.getElementById('altura').value;
+                    const peso_usuario = document.getElementById('peso').value;
+
+                    console.log('Dados a enviar:', {nome_usuario, email, data_nascimento, sexo, altura, peso_usuario});
+
+                    if (!nome_usuario || !email || !senha || !data_nascimento || !sexo || !altura || !peso_usuario) {
+                        alert('Preencha todos os campos.');
+                        return;
+                    }
+
+                    try {
+                        console.log('Fazendo fetch para /cadastraUsuario...');
+                        const resp = await fetch('http://localhost:3000/cadastraUsuario', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ nome_usuario, email, senha, data_nascimento, sexo, altura, peso_usuario })
+                        });
+
+                        console.log('Resposta recebida - status:', resp.status);
+                        const data = await resp.json();
+                        console.log('Body da resposta:', data);
+                        
+                        if (resp.status === 201) {
+                            // Auto-login: salvar objeto `usuario` no localStorage e redirecionar para a página inicial
+                            const createdId = data.id;
+                            const usuarioObj = {
+                                id: createdId,
+                                email: email,
+                                senha: senha,
+                                nome_usuario: nome_usuario
+                            };
+                            try {
+                                localStorage.setItem('usuario', JSON.stringify(usuarioObj));
+                                localStorage.removeItem('cadastro_parcial');
+                                console.info('✓ Cadastro OK — usuário salvo em localStorage:', usuarioObj);
+                            } catch (e) {
+                                console.error('✗ Falha ao salvar usuario em localStorage:', e);
+                            }
+
+                            // Redirecionamento robusto: usar replace e timeout para evitar problemas com alerts bloqueando
+                            console.log('Redirecionando para index.html...');
+                            setTimeout(() => {
+                                try {
+                                    window.location.replace('index.html');
+                                } catch (e) {
+                                    console.error('✗ Redirecionamento falhou:', e);
+                                    // como fallback, alterar href
+                                    window.location.href = 'index.html';
+                                }
+                            }, 50);
+
+                            return;
+                        }
+
+                        console.warn('Status não é 201:', resp.status);
+                        alert(data.error || data.message || 'Erro no cadastro');
+                    } catch (err) {
+                        console.error('✗ Erro no fetch:', err);
+                        alert('Erro ao conectar com o servidor.');
+                    }
+                });
+            });
+            </script>
             
             <p>Já tem uma conta? <a href="login.html">Faça Login</a></p>
     </div>

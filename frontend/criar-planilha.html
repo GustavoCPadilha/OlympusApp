@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Criar Planilha - Olympus App</title>
+  <link rel="stylesheet" href="css/padrao.css">
+  <link rel="stylesheet" href="css/planilhas.css">
+</head>
+<body>
+  <header>
+    <h1><a href="index.html" style="text-decoration:none;color:inherit;">Olympus App</a></h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="exercicios.html">Exercícios</a>
+      <a href="planilhas.html">Planilhas</a>
+      <a href="profile.html">Perfil</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Criar Nova Planilha</h1>
+
+    <form id="form-planilha">
+      <label>Nome da planilha<br>
+        <input type="text" id="nomePlanilha" required>
+      </label>
+      <br>
+      <label>Data de início<br>
+        <input type="date" id="dataInicio" required>
+      </label>
+
+      <h2>Escolher exercícios</h2>
+      <div id="lista-exercicios"></div>
+
+      <h2>Exercícios selecionados</h2>
+      <div id="selecionados"></div>
+
+      <button type="submit">Criar Planilha</button>
+    </form>
+
+  </main>
+
+  <script src="javascript/criar_planilha.js"></script>
+</body>
+</html>
