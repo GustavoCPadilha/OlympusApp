@@ -12,50 +12,72 @@ if (!usuario) {
 
 const STATIC_EXERCISES = {
   peito: [
-    { id_exercicio: 1, nome: 'Supino reto', descricao: 'Supino com barra — 3 séries de 8-12 repetições.' },
-    { id_exercicio: 29, nome: 'Supino inclinado', descricao: 'Foco na parte superior do peitoral.' },
-    { id_exercicio: 30, nome: 'Crucifixo', descricao: 'Execução lenta para alongar o peitoral.' },
+    { id_exercicio: 1, nome: 'Supino reto' },
+    { id_exercicio: 2, nome: 'Supino inclinado' },
+    { id_exercicio: 3, nome: 'Crucifixo' },
+    { id_exercicio: 4, nome: 'Crossover' },
+    { id_exercicio: 5, nome: 'Voador (peck deck)' },
   ],
+
   costas: [
-    { id_exercicio: null, nome: 'Puxada na barra', descricao: 'Puxada frente com pegada aberta.' },
-    { id_exercicio: 9, nome: 'Remada curvada', descricao: 'Remada com barra para espessura das costas.' },
-    { id_exercicio: 17, nome: 'Pullover', descricao: 'Alongamento e ativação do grande dorsal.' },
+    { id_exercicio: 6, nome: 'Puxada frontal' },
+    { id_exercicio: 7, nome: 'Remada baixa' },
+    { id_exercicio: 8, nome: 'Remada curvada' },
+    { id_exercicio: 9, nome: 'Pull-up (barra fixa)' },
+    { id_exercicio: 10, nome: 'Puxada na Polia' },
   ],
+
   quadriceps: [
-    { id_exercicio: 2, nome: 'Agachamento livre', descricao: 'Base do treino de pernas — foque na técnica.' },
-    { id_exercicio: 6, nome: 'Leg press', descricao: 'Boa opção para volume de treino.' },
-    { id_exercicio: null, nome: 'Extensão de pernas', descricao: 'Isolamento do quadríceps.' },
+    { id_exercicio: 11, nome: 'Agachamento (livre)' },
+    { id_exercicio: 12, nome: 'Leg press 45°' },
+    { id_exercicio: 13, nome: 'Cadeira extensora' },
+    { id_exercicio: 14, nome: 'Afundo / Passada' },
   ],
+
   posterior: [
-    { id_exercicio: 10, nome: 'Stiff', descricao: 'Foco em isquiotibiais e lombar.' },
-    { id_exercicio: null, nome: 'Good morning', descricao: 'Mobilidade e força do posterior.' },
+    { id_exercicio: 15, nome: 'Flexora' },
+    { id_exercicio: 16, nome: 'Stiff' },
+    { id_exercicio: 17, nome: 'Levantamento terra' },
+    { id_exercicio: 18, nome: 'Back extension' },
   ],
+
   panturrilha: [
-    { id_exercicio: null, nome: 'Elevação de panturrilha em pé', descricao: 'Séries altas e controle.' },
-    { id_exercicio: null, nome: 'Elevação sentado', descricao: 'Isolamento da panturrilha.' },
+    { id_exercicio: 19, nome: 'Panturrilha em pé na máquina' },
+    { id_exercicio: 20, nome: 'Panturrilha em pé livre' },
+    { id_exercicio: 21, nome: 'Panturrilha sentado' },
+    { id_exercicio: 22, nome: 'Panturrilha no leg press' },
   ],
+
   ombros: [
-    { id_exercicio: 21, nome: 'Desenvolvimento com halteres', descricao: 'Trabalha deltoide anterior e medial.' },
-    { id_exercicio: 5, nome: 'Elevação lateral', descricao: 'Isolamento do deltoide lateral.' },
+    { id_exercicio: 23, nome: 'Desenvolvimento de ombro (com halteres ou barra)' },
+    { id_exercicio: 24, nome: 'Elevação lateral' },
+    { id_exercicio: 25, nome: 'Elevação frontal' },
+    { id_exercicio: 26, nome: 'Remada alta' },
   ],
+
   triceps: [
-    { id_exercicio: 26, nome: 'Tríceps testa', descricao: 'Boa para volume de tríceps.' },
-    { id_exercicio: null, nome: 'Paralelas', descricao: 'Exercício composto para tríceps.' },
+    { id_exercicio: 27, nome: 'Tríceps frânces' },
+    { id_exercicio: 28, nome: 'Tríceps testa' },
+    { id_exercicio: 29, nome: 'Tríceps coice com corda (no pulley)' },
+    { id_exercicio: 30, nome: 'Tríceps mergulho no banco' },
+    { id_exercicio: 31, nome: 'Tríceps na polia (corda ou barra)' },
   ],
+
   biceps: [
-    { id_exercicio: 4, nome: 'Rosca direta', descricao: 'Clássico para bíceps.' },
-    { id_exercicio: 20, nome: 'Rosca martelo', descricao: 'Trabalha braquial e antebraço.' },
+    { id_exercicio: 32, nome: 'Rosca direta com barra' },
+    { id_exercicio: 33, nome: 'Rosca simultânea' },
+    { id_exercicio: 34, nome: 'Rosca martelo' },
+    { id_exercicio: 35, nome: 'Rosca biceps Scott unilateral com halter' },
+    { id_exercicio: 36, nome: 'Rosca alternada com halteres' },
   ],
+
   antebraco: [
-    { id_exercicio: 64, nome: 'Rosca punho', descricao: 'Fortalecimento do antebraço.' },
+    { id_exercicio: 37, nome: 'Flexão de punho' },
+    { id_exercicio: 38, nome: 'Rosca punho' },
+    { id_exercicio: 39, nome: 'Suspensão na barra (Dead hang)' },
+    { id_exercicio: 40, nome: 'Rosca Zottman' },
   ],
 };
-// STATIC_EXERCISES_END
-
-// Nota: porque o banco já tem tabela `exercicio` real com ids, em um ambiente real
-// você deveria sincronizar esses ids com a tabela `exercicio` e usar os ids verdadeiros.
-// Aqui usaremos ids falsos >=1000 para evitar colisões e, se preferir, o backend pode
-// mapear por nome.
 
 const listaDiv = document.getElementById('lista-exercicios');
 const selecionadosDiv = document.getElementById('selecionados');
@@ -153,7 +175,6 @@ function renderSelected() {
     selecionadosDiv.appendChild(row);
   });
 
-  // attach handlers
   document.querySelectorAll('.btn-remove').forEach(btn => {
     btn.addEventListener('click', () => removeFromSelected(Number(btn.dataset.id)));
   });

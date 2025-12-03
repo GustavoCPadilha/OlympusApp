@@ -59,7 +59,7 @@ main h1 {
 #registro-refeicao input:not(.input-submit) {
     max-width: 100%;
     margin-bottom: 10px;
-    padding: 10px; /* Ajuste o padding para ser um pouco menor no formulário */
+    padding: 10px;
 }
 
 .form-group {
@@ -71,7 +71,21 @@ main h1 {
 }
 
 .input-submit {
-    margin: 10px 0 0 0; /* Ajusta a margem do botão */
+    background-color: var(--cor-2);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 1.15em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: .25s ease;
+}
+
+.input-submit:hover {
+    transform: scale(1.01);
 }
 
 /* Estilos para a lista de refeições */
@@ -110,6 +124,7 @@ main h1 {
 
 #refeicoes-dia .info-refeicao {
     font-weight: 500;
+    margin-left: 10px;
 }
 
 #refeicoes-dia .calorias-refeicao {

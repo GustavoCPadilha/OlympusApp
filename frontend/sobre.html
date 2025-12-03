@@ -9,12 +9,12 @@
 </head>
 <body>
     <header>
-        <h1>Olympus App</h1>
+        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Olympus App</a></h1>
         <nav>
             <a href="index.html">Home</a>
             <a href="exercicios.html">Exercícios</a>
             <a href="profile.html">Perfil</a>
-            <a href="login.html">Login</a>
+            <a href="login.html">Sair</a>
         </nav>
     </header>
 
@@ -23,27 +23,48 @@
 
         <section>
             <h3>Quem somos</h3>
-            <p>Somos uma plataforma dedicada a ajudar pessoas a monitorar treinos, alimentação e progresso físico com simplicidade e foco em resultados.</p>
+            <p>O <b>Olympus App</b> é uma plataforma criada para pessoas que buscam monitorar treinos, alimentação e progresso físico de forma simples, prática e eficiente. Nosso objetivo é transformar a jornada fitness em uma experiência organizada e motivadora.</p>
         </section>
 
         <section>
             <h3>Missão e Valores</h3>
-            <p>Missão: facilitar a consistência dos usuários na prática de exercícios e hábitos saudáveis.<br>
-            Valores: disciplina, clareza, segurança e evolução contínua.</p>
+            <ul>
+                <li><b>Missão:</b> Facilitar a consistência dos usuários na prática de exercícios e hábitos saudáveis.</li>
+                <li><b>Valores:</b> Disciplina, clareza, segurança e evolução contínua.</li>
+            </ul>
         </section>
 
         <section>
             <h3>Equipe de Treinadores</h3>
-            <p>Contamos com profissionais especializados em musculação, fisiologia do exercício e nutrição esportiva. (Adicione perfis e fotos da equipe aqui.)</p>
+            <p>Nossa equipe é formada por profissionais especializados em:</p>
+            <ul>
+                <li>Musculação</li>
+                <li>Fisiologia do Exercício</li>
+                <li>Nutrição Esportiva</li>
+            </ul>
+
+            <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:16px;">
+                <div style="flex:1 1 200px;background:white;padding:12px;border-radius:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                    <img src="imgs/matheus.enc" alt="Matheus da Silva Padilha" style="width:100%;border-radius:50%;max-width:120px;margin-bottom:8px;">
+                    <h4>Matheus da Silva Padilha</h4>
+                    <p>Especialista em Musculação</p>
+                </div>
+                <div style="flex:1 1 200px;background:white;padding:12px;border-radius:8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                    <img src="imgs/henrique.enc" alt="Henrique François" style="width:100%;border-radius:50%;max-width:120px;margin-bottom:8px;">
+                    <h4>Henrique François</h4>
+                    <p>Nutricionista Esportivo</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <footer class="site-footer">
+        <footer class="site-footer">
         <div class="footer-inner">
             <small>© <span id="year"></span> Olympus App</small>
-            <nav class="footer-links">
+            <nav class="footer-links" aria-label="Links úteis">
                 <a href="termos.html">Termos</a>
                 <a href="privacidade.html">Privacidade</a>
+                <a href="cancelamentos.html">Cancelamentos</a>
             </nav>
         </div>
     </footer>
