@@ -67,11 +67,24 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        const API = 'http://localhost:3000';
         const form = document.getElementById('form-refeicao');
         const listaRefeicoes = document.getElementById('refeicoes-dia');
         const totalCaloriasSpan = document.getElementById('total-calorias');
         const semRefeicoes = document.getElementById('sem-refeicoes');
         let totalCalorias = 0;
+
+        function formatDatePT(d) {
+            if (!d) return '';
+            if (typeof d === 'string' && d.indexOf('-') >= 0) {
+                const parts = d.split('-');
+                if (parts.length >= 3) {
+                    const dayPart = parts[2].split('T')[0];
+                    return `${dayPart}/${parts[1]}/${parts[0]}`;
+                }
+            }
+            try { return new Date(d).toLocaleDateString('pt-BR'); } catch(e) { return d; }
+        }
 
         // Função para atualizar o contador de calorias
         function atualizarContador() {
@@ -83,8 +96,53 @@
             }
         }
 
-        // Função para adicionar uma nova refeição
-        form.addEventListener('submit', function(e) {
+        // Carrega refeições do usuário para hoje
+        async function carregarRefeicoesDoDia() {
+            listaRefeicoes.innerHTML = '';
+            totalCalorias = 0;
+
+            const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+            if (!usuario || !usuario.id) {
+                semRefeicoes.textContent = 'Usuário não logado.';
+                return;
+            }
+
+            // busca pelo dia atual
+            const hoje = new Date().toISOString().split('T')[0];
+            try {
+                const resp = await fetch(`${API}/buscaRefeicao?id_usuario=${usuario.id}&dia_refeicao=${hoje}`);
+                if (!resp.ok) {
+                    semRefeicoes.textContent = 'Erro ao carregar refeições.';
+                    return;
+                }
+                const items = await resp.json();
+                if (!Array.isArray(items) || items.length === 0) {
+                    semRefeicoes.style.display = 'block';
+                    return;
+                }
+
+                items.forEach(r => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="info-refeicao">${r.descricao_refeicao}</span>
+                        <span class="calorias-refeicao">${r.id_refeicao ? '' : ''}</span>
+                        <small class="data-refeicao">${formatDatePT(r.dia_refeicao)}</small>
+                    `;
+                    listaRefeicoes.appendChild(li);
+                    // tentar extrair calorias do texto (se o front envia 'Alimento (150g) - 350 Kcal')
+                    const match = (r.descricao_refeicao||'').match(/(\d+)\s*Kcal/i);
+                    if (match) totalCalorias += Number(match[1]);
+                });
+
+                atualizarContador();
+            } catch (err) {
+                console.error('Erro ao carregar refeições:', err);
+                semRefeicoes.textContent = 'Erro ao carregar refeições.';
+            }
+        }
+
+        // Função para adicionar uma nova refeição (agora salva no backend)
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const alimentoInput = document.getElementById('alimento');
@@ -93,30 +151,43 @@
             const alimento = alimentoInput.value.trim();
             const calorias = parseInt(caloriasInput.value);
 
-            if (alimento && calorias > 0) {
-                // 1. Criar o item da lista
-                const novoItem = document.createElement('li');
-                novoItem.innerHTML = `
-                    <span class="info-refeicao">${alimento}</span>
-                    <span class="calorias-refeicao">${calorias} Kcal</span>
-                `;
-                listaRefeicoes.appendChild(novoItem);
+            if (!(alimento && calorias > 0)) {
+                alert('Por favor, preencha o nome do alimento e a quantidade de calorias (deve ser um valor positivo).');
+                return;
+            }
 
-                // 2. Atualizar o total de calorias
-                totalCalorias += calorias;
-                atualizarContador();
+            const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+            if (!usuario || !usuario.id) {
+                alert('Você precisa estar logado para registrar refeições.');
+                return;
+            }
 
-                // 3. Limpar o formulário
+            const hoje = new Date().toISOString().split('T')[0];
+            const descricao = `${alimento} — ${calorias} Kcal`;
+
+            try {
+                const resp = await fetch(`${API}/cadastraRefeicao`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_usuario: usuario.id, dia_refeicao: hoje, descricao_refeicao: descricao })
+                });
+
+                if (!resp.ok) {
+                    const txt = await resp.text();
+                    throw new Error(`${resp.status} ${txt}`);
+                }
+
+                // atualizar lista localmente recarregando do servidor
                 alimentoInput.value = '';
                 caloriasInput.value = '';
-                alimentoInput.focus();
-            } else {
-                alert('Por favor, preencha o nome do alimento e a quantidade de calorias (deve ser um valor positivo).');
+                await carregarRefeicoesDoDia();
+            } catch (err) {
+                console.error('Erro ao salvar refeição:', err);
+                alert('Não foi possível salvar a refeição. Tente novamente.');
             }
         });
 
         // Inicializa o contador e a mensagem de "sem refeições"
-        atualizarContador();
+        carregarRefeicoesDoDia();
 
     </script>
 </body>

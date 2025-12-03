@@ -32,18 +32,67 @@
                     </div>
                     
                     <div class="form-group-medida">
+                        <label for="ombros">Ombros (cm):</label>
+                        <input type="number" id="ombros" name="ombros" step="0.1" min="1" placeholder="Ex: 120.0">
+                    </div>
+
+                    <div class="form-group-medida">
+                        <label for="peitoral">Peitoral (cm):</label>
+                        <input type="number" id="peitoral" name="peitoral" step="0.1" min="1" placeholder="Ex: 105.0">
+                    </div>
+
+                    <div class="form-group-medida">
+                        <label for="bicepsE">Bíceps Esquerdo (cm):</label>
+                        <input type="number" id="bicepsE" name="bicepsE" step="0.1" min="1" placeholder="Ex: 38.0">
+                    </div>
+
+                    <div class="form-group-medida">
+                        <label for="bicepsD">Bíceps Direito (cm):</label>
+                        <input type="number" id="bicepsD" name="bicepsD" step="0.1" min="1" placeholder="Ex: 38.5">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-medida">
+                        <label for="antebracoE">Antebraço Esquerdo (cm):</label>
+                        <input type="number" id="antebracoE" name="antebracoE" step="0.1" min="1" placeholder="Ex: 30.0">
+                    </div>
+
+                    <div class="form-group-medida">
+                        <label for="antebracoD">Antebraço Direito (cm):</label>
+                        <input type="number" id="antebracoD" name="antebracoD" step="0.1" min="1" placeholder="Ex: 30.5">
+                    </div>
+
+                    <div class="form-group-medida">
                         <label for="cintura">Cintura (cm):</label>
                         <input type="number" id="cintura" name="cintura" step="0.1" min="1" placeholder="Ex: 85.0" required>
                     </div>
 
                     <div class="form-group-medida">
-                        <label for="braco">Braço (cm):</label>
-                        <input type="number" id="braco" name="braco" step="0.1" min="1" placeholder="Ex: 38.0">
+                        <label for="quadril">Quadril (cm):</label>
+                        <input type="number" id="quadril" name="quadril" step="0.1" min="1" placeholder="Ex: 95.0">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group-medida">
+                        <label for="coxaE">Coxa Esquerda (cm):</label>
+                        <input type="number" id="coxaE" name="coxaE" step="0.1" min="1" placeholder="Ex: 60.0">
                     </div>
 
                     <div class="form-group-medida">
-                        <label for="perna">Perna (cm):</label>
-                        <input type="number" id="perna" name="perna" step="0.1" min="1" placeholder="Ex: 60.0">
+                        <label for="coxaD">Coxa Direita (cm):</label>
+                        <input type="number" id="coxaD" name="coxaD" step="0.1" min="1" placeholder="Ex: 60.5">
+                    </div>
+
+                    <div class="form-group-medida">
+                        <label for="panturrilhaE">Panturrilha Esquerda (cm):</label>
+                        <input type="number" id="panturrilhaE" name="panturrilhaE" step="0.1" min="1" placeholder="Ex: 38.0">
+                    </div>
+
+                    <div class="form-group-medida">
+                        <label for="panturrilhaD">Panturrilha Direita (cm):</label>
+                        <input type="number" id="panturrilhaD" name="panturrilhaD" step="0.1" min="1" placeholder="Ex: 38.5">
                     </div>
                 </div>
 
@@ -55,20 +104,56 @@
             <h2>Medidas Mais Recentes</h2>
             <div class="medidas-atuais">
                 <div class="medida-item">
-                    <span class="valor" id="peso-atual">78.9</span>
+                    <span class="valor" id="peso-atual">—</span>
                     <span class="label">Peso (Kg)</span>
                 </div>
                 <div class="medida-item">
-                    <span class="valor" id="cintura-atual">82.5</span>
+                    <span class="valor" id="ombros-atual">—</span>
+                    <span class="label">Ombros (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="peitoral-atual">—</span>
+                    <span class="label">Peitoral (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="bicepsE-atual">—</span>
+                    <span class="label">Bíceps E (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="bicepsD-atual">—</span>
+                    <span class="label">Bíceps D (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="antebracoE-atual">—</span>
+                    <span class="label">Antebraço E (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="antebracoD-atual">—</span>
+                    <span class="label">Antebraço D (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="cintura-atual">—</span>
                     <span class="label">Cintura (cm)</span>
                 </div>
                 <div class="medida-item">
-                    <span class="valor" id="braco-atual">37.1</span>
-                    <span class="label">Braço D. (cm)</span>
+                    <span class="valor" id="quadril-atual">—</span>
+                    <span class="label">Quadril (cm)</span>
                 </div>
                 <div class="medida-item">
-                    <span class="valor" id="perna-atual">59.8</span>
-                    <span class="label">Perna D. (cm)</span>
+                    <span class="valor" id="coxaE-atual">—</span>
+                    <span class="label">Coxa E (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="coxaD-atual">—</span>
+                    <span class="label">Coxa D (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="panturrilhaE-atual">—</span>
+                    <span class="label">Panturrilha E (cm)</span>
+                </div>
+                <div class="medida-item">
+                    <span class="valor" id="panturrilhaD-atual">—</span>
+                    <span class="label">Panturrilha D (cm)</span>
                 </div>
             </div>
         </section>
@@ -90,30 +175,146 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        const API = 'http://localhost:3000';
         const formMedidas = document.getElementById('form-medidas');
 
-        // Função básica para simular o registro e atualização da última medida
-        formMedidas.addEventListener('submit', function(e) {
+        async function carregarMedidasRecentes() {
+            const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+            if (!usuario || !usuario.id) return;
+
+            try {
+                // peso
+                const respPeso = await fetch(`${API}/buscaPesoCorporal?id_usuario=${usuario.id}`);
+                if (respPeso.ok) {
+                    const pesos = await respPeso.json();
+                    if (Array.isArray(pesos) && pesos.length > 0) {
+                        pesos.sort((a,b)=> b.dia_pesoCorporal.localeCompare(a.dia_pesoCorporal));
+                        document.getElementById('peso-atual').textContent = parseFloat(pesos[0].peso_pesoCorporal).toFixed(1);
+                    }
+                }
+
+                // medidas corporais
+                const respMed = await fetch(`${API}/buscaMedidaCorporal?id_usuario=${usuario.id}`);
+                if (respMed.ok) {
+                    const meds = await respMed.json();
+                    if (Array.isArray(meds) && meds.length > 0) {
+                        // procurar por região mais recente (compare data DESC)
+                        const latestByReg = {};
+                        meds.forEach(m => {
+                            const reg = (m.regiao_medidaCorporal || '').toLowerCase();
+                            if (!latestByReg[reg] || m.dia_medidaCorporal > latestByReg[reg].dia_medidaCorporal) {
+                                latestByReg[reg] = m;
+                            }
+                        });
+                        
+                        if (latestByReg['ombros']) document.getElementById('ombros-atual').textContent = parseFloat(latestByReg['ombros'].medida_cm).toFixed(1);
+                        if (latestByReg['peitoral']) document.getElementById('peitoral-atual').textContent = parseFloat(latestByReg['peitoral'].medida_cm).toFixed(1);
+                        if (latestByReg['bíceps esquerdo'] || latestByReg['biceps esquerdo']) document.getElementById('bicepsE-atual').textContent = parseFloat((latestByReg['bíceps esquerdo'] || latestByReg['biceps esquerdo']).medida_cm).toFixed(1);
+                        if (latestByReg['bíceps direito'] || latestByReg['biceps direito']) document.getElementById('bicepsD-atual').textContent = parseFloat((latestByReg['bíceps direito'] || latestByReg['biceps direito']).medida_cm).toFixed(1);
+                        if (latestByReg['antebraço esquerdo'] || latestByReg['antebraco esquerdo']) document.getElementById('antebracoE-atual').textContent = parseFloat((latestByReg['antebraço esquerdo'] || latestByReg['antebraco esquerdo']).medida_cm).toFixed(1);
+                        if (latestByReg['antebraço direito'] || latestByReg['antebraco direito']) document.getElementById('antebracoD-atual').textContent = parseFloat((latestByReg['antebraço direito'] || latestByReg['antebraco direito']).medida_cm).toFixed(1);
+                        if (latestByReg['cintura']) document.getElementById('cintura-atual').textContent = parseFloat(latestByReg['cintura'].medida_cm).toFixed(1);
+                        if (latestByReg['quadril']) document.getElementById('quadril-atual').textContent = parseFloat(latestByReg['quadril'].medida_cm).toFixed(1);
+                        if (latestByReg['coxa esquerda']) document.getElementById('coxaE-atual').textContent = parseFloat(latestByReg['coxa esquerda'].medida_cm).toFixed(1);
+                        if (latestByReg['coxa direita']) document.getElementById('coxaD-atual').textContent = parseFloat(latestByReg['coxa direita'].medida_cm).toFixed(1);
+                        if (latestByReg['panturrilha esquerda']) document.getElementById('panturrilhaE-atual').textContent = parseFloat(latestByReg['panturrilha esquerda'].medida_cm).toFixed(1);
+                        if (latestByReg['panturrilha direita']) document.getElementById('panturrilhaD-atual').textContent = parseFloat(latestByReg['panturrilha direita'].medida_cm).toFixed(1);
+                    }
+                }
+            } catch (err) {
+                console.error('Erro ao carregar medidas recentes:', err);
+            }
+        }
+
+        // Submeter medidas para o backend
+        formMedidas.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Pega os valores do formulário
-            const peso = document.getElementById('peso').value;
-            const cintura = document.getElementById('cintura').value;
-            const braco = document.getElementById('braco').value;
-            const perna = document.getElementById('perna').value;
+            const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
+            if (!usuario || !usuario.id) { alert('Você precisa estar logado para salvar medidas.'); return; }
 
-            // Atualiza a seção de "Medidas Mais Recentes"
-            document.getElementById('peso-atual').textContent = peso ? parseFloat(peso).toFixed(1) : '-';
-            document.getElementById('cintura-atual').textContent = cintura ? parseFloat(cintura).toFixed(1) : '-';
-            document.getElementById('braco-atual').textContent = braco ? parseFloat(braco).toFixed(1) : '-';
-            document.getElementById('perna-atual').textContent = perna ? parseFloat(perna).toFixed(1) : '-';
-            
-            // Mensagem de Feedback (em uma aplicação real, aqui haveria o salvamento)
-            alert(`Medidas registradas com sucesso para hoje! Peso: ${peso} Kg.`);
+            const hoje = new Date().toISOString().split('T')[0];
 
-            // Limpa o formulário
-            formMedidas.reset();
+            // campos e mapeamento para nomes de região
+            const medidas = {
+                peso: document.getElementById('peso').value,
+                ombros: document.getElementById('ombros').value,
+                peitoral: document.getElementById('peitoral').value,
+                bicepsE: document.getElementById('bicepsE').value,
+                bicepsD: document.getElementById('bicepsD').value,
+                antebracoE: document.getElementById('antebracoE').value,
+                antebracoD: document.getElementById('antebracoD').value,
+                cintura: document.getElementById('cintura').value,
+                quadril: document.getElementById('quadril').value,
+                coxaE: document.getElementById('coxaE').value,
+                coxaD: document.getElementById('coxaD').value,
+                panturrilhaE: document.getElementById('panturrilhaE').value,
+                panturrilhaD: document.getElementById('panturrilhaD').value
+            };
+
+            // validar peso obrigatório
+            if (!medidas.peso || !medidas.cintura) { 
+                alert('Peso e cintura são obrigatórios.'); 
+                return; 
+            }
+
+            try {
+                // salvar peso
+                if (medidas.peso) {
+                    const respPeso = await fetch(`${API}/cadastraPesoCorporal`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_usuario: usuario.id, dia_pesoCorporal: hoje, peso_pesoCorporal: Number(medidas.peso), meta_peso: 0 })
+                    });
+                    if (!respPeso.ok) {
+                        const txt = await respPeso.text();
+                        throw new Error(`Erro ao salvar peso: ${respPeso.status} ${txt}`);
+                    }
+                }
+
+                // salvar cada medida corporal
+                const regioes = [
+                    ['Ombros', medidas.ombros],
+                    ['Peitoral', medidas.peitoral],
+                    ['Bíceps Esquerdo', medidas.bicepsE],
+                    ['Bíceps Direito', medidas.bicepsD],
+                    ['Antebraço Esquerdo', medidas.antebracoE],
+                    ['Antebraço Direito', medidas.antebracoD],
+                    ['Cintura', medidas.cintura],
+                    ['Quadril', medidas.quadril],
+                    ['Coxa Esquerda', medidas.coxaE],
+                    ['Coxa Direita', medidas.coxaD],
+                    ['Panturrilha Esquerda', medidas.panturrilhaE],
+                    ['Panturrilha Direita', medidas.panturrilhaD]
+                ];
+
+                const requests = regioes
+                    .filter(([_, val]) => val)
+                    .map(([reg, val]) =>
+                        fetch(`${API}/cadastraMedidaCorporal`, {
+                            method: 'POST', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ id_usuario: usuario.id, dia_medidaCorporal: hoje, regiao_medidaCorporal: reg, medida_cm: Number(val) })
+                        }).then(r => {
+                            if (!r.ok) throw new Error(`Erro ao salvar ${reg}: ${r.status}`);
+                            return r.json();
+                        })
+                    );
+
+                await Promise.all(requests);
+
+                alert('Medidas registradas com sucesso para hoje!');
+                formMedidas.reset();
+                
+                // Aguardar um pouco e recarregar para garantir que os dados foram persistidos
+                setTimeout(() => {
+                    carregarMedidasRecentes();
+                }, 500);
+            } catch (err) {
+                console.error('Erro ao salvar medidas:', err);
+                alert('Não foi possível salvar as medidas. Tente novamente.');
+            }
         });
+
+        carregarMedidasRecentes();
     </script>
 </body>
 </html>

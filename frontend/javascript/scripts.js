@@ -68,6 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Funções da página de perfil: abas, avatar preview, personalização e medidas
 document.addEventListener('DOMContentLoaded', function () {
+    const API = 'http://localhost:3000';
+    const usuario = JSON.parse(localStorage.getItem('usuario') || 'null');
     // Abas
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
@@ -132,56 +134,264 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loadPersonalization();
 
-    // Medidas: CRUD simples via localStorage
+    // Medidas: salvar/carregar via backend
     const measurementForm = document.getElementById('measurementForm');
     const measurementsTableBody = document.getElementById('measurementsTableBody');
 
-    function loadMeasurements() {
-        return JSON.parse(localStorage.getItem('measurements') || '[]');
-    }
-    function saveMeasurements(arr) {
-        localStorage.setItem('measurements', JSON.stringify(arr));
-    }
-    function renderMeasurements() {
+    async function carregarMedidas() {
         if (!measurementsTableBody) return;
-        const arr = loadMeasurements();
         measurementsTableBody.innerHTML = '';
-        arr.sort((a,b)=> b.date.localeCompare(a.date)).forEach((m, idx) => {
+        const usuarioLocal = JSON.parse(localStorage.getItem('usuario') || 'null');
+        if (!usuarioLocal || !usuarioLocal.id) {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${m.date}</td>
-                            <td>${m.weight ?? ''}</td>
-                            <td>${m.waist ?? ''}</td>
-                            <td>${m.chest ?? ''}</td>
-                            <td><button class="delete-measure" data-idx="${idx}">Excluir</button></td>`;
+            tr.innerHTML = '<td colspan="14">Usuário não logado.</td>';
             measurementsTableBody.appendChild(tr);
-        });
-        // attach delete
-        measurementsTableBody.querySelectorAll('.delete-measure').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const idx = parseInt(btn.getAttribute('data-idx'), 10);
-                const arr = loadMeasurements();
-                arr.splice(idx, 1);
-                saveMeasurements(arr);
-                renderMeasurements();
+            return;
+        }
+
+        try {
+            // buscar pesos e medidas
+            const [respPeso, respMed] = await Promise.all([
+                fetch(`${API}/buscaPesoCorporal?id_usuario=${usuarioLocal.id}`),
+                fetch(`${API}/buscaMedidaCorporal?id_usuario=${usuarioLocal.id}`)
+            ]);
+
+            const pesos = respPeso.ok ? await respPeso.json() : [];
+            const meds = respMed.ok ? await respMed.json() : [];
+
+            // Agregar por data (YYYY-MM-DD)
+            const byDate = new Map();
+
+            if (Array.isArray(pesos)) {
+                pesos.forEach(p => {
+                    const d = p.dia_pesoCorporal;
+                    if (!byDate.has(d)) byDate.set(d, {});
+                    byDate.get(d).date = d;
+                    byDate.get(d).peso = p.peso_pesoCorporal;
+                });
+            }
+
+            if (Array.isArray(meds)) {
+                meds.forEach(m => {
+                    const d = m.dia_medidaCorporal;
+                    if (!byDate.has(d)) byDate.set(d, {});
+                    const obj = byDate.get(d);
+                    obj.date = d;
+                    const reg = (m.regiao_medidaCorporal || '').toLowerCase();
+                    
+                    // mapear todas as regiões
+                    if (reg.includes('ombro')) obj.ombros = m.medida_cm;
+                    else if (reg.includes('peitoral')) obj.peitoral = m.medida_cm;
+                    else if (reg.includes('bíceps e') || reg.includes('biceps e')) obj.bicepsE = m.medida_cm;
+                    else if (reg.includes('bíceps d') || reg.includes('biceps d')) obj.bicepsD = m.medida_cm;
+                    else if (reg.includes('antebraço e') || reg.includes('antebraco e')) obj.antebracoE = m.medida_cm;
+                    else if (reg.includes('antebraço d') || reg.includes('antebraco d')) obj.antebracoD = m.medida_cm;
+                    else if (reg.includes('cintura')) obj.cintura = m.medida_cm;
+                    else if (reg.includes('quadril')) obj.quadril = m.medida_cm;
+                    else if (reg.includes('coxa e')) obj.coxaE = m.medida_cm;
+                    else if (reg.includes('coxa d')) obj.coxaD = m.medida_cm;
+                    else if (reg.includes('panturrilha e')) obj.panturrilhaE = m.medida_cm;
+                    else if (reg.includes('panturrilha d')) obj.panturrilhaD = m.medida_cm;
+                });
+            }
+
+            const rows = Array.from(byDate.values()).sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+            if (rows.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="14">Nenhuma medida registrada.</td>';
+                measurementsTableBody.appendChild(tr);
+                return;
+            }
+
+            rows.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${formatDatePT(r.date)}</td>
+                                <td>${r.peso ?? ''}</td>
+                                <td>${r.ombros ?? ''}</td>
+                                <td>${r.peitoral ?? ''}</td>
+                                <td>${r.bicepsE ?? ''}</td>
+                                <td>${r.bicepsD ?? ''}</td>
+                                <td>${r.antebracoE ?? ''}</td>
+                                <td>${r.antebracoD ?? ''}</td>
+                                <td>${r.cintura ?? ''}</td>
+                                <td>${r.quadril ?? ''}</td>
+                                <td>${r.coxaE ?? ''}</td>
+                                <td>${r.coxaD ?? ''}</td>
+                                <td>${r.panturrilhaE ?? ''}</td>
+                                <td>${r.panturrilhaD ?? ''}</td>`;
+                measurementsTableBody.appendChild(tr);
             });
-        });
+        } catch (err) {
+            console.error('Erro ao carregar medidas:', err);
+            const tr = document.createElement('tr');
+            tr.innerHTML = '<td colspan="14">Erro ao carregar medidas.</td>';
+            measurementsTableBody.appendChild(tr);
+        }
     }
 
     if (measurementForm) {
-        measurementForm.addEventListener('submit', (e) => {
+        measurementForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const date = document.getElementById('mDate').value;
             const weight = document.getElementById('mWeight').value;
             const waist = document.getElementById('mWaist').value;
             const chest = document.getElementById('mChest').value;
             if (!date || !weight) { alert('Preencha pelo menos data e peso.'); return; }
-            const arr = loadMeasurements();
-            arr.push({ date, weight, waist, chest });
-            saveMeasurements(arr);
-            renderMeasurements();
-            measurementForm.reset();
+
+            const usuarioLocal = JSON.parse(localStorage.getItem('usuario') || 'null');
+            if (!usuarioLocal || !usuarioLocal.id) { alert('Você precisa estar logado para salvar medidas.'); return; }
+
+            try {
+                // salvar peso como medida principal
+                const resp = await fetch(`${API}/cadastraPesoCorporal`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_usuario: usuarioLocal.id, dia_pesoCorporal: date, peso_pesoCorporal: weight, meta_peso: null })
+                });
+
+                if (!resp.ok) {
+                    const txt = await resp.text();
+                    throw new Error(`${resp.status} ${txt}`);
+                }
+
+                // também salvar medida corporal se houver cintura/peito
+                if (waist) {
+                    await fetch(`${API}/cadastraMedidaCorporal`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_usuario: usuarioLocal.id, dia_medidaCorporal: date, regiao_medidaCorporal: 'Cintura', medida_cm: waist })
+                    });
+                }
+                if (chest) {
+                    await fetch(`${API}/cadastraMedidaCorporal`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_usuario: usuarioLocal.id, dia_medidaCorporal: date, regiao_medidaCorporal: 'Peito', medida_cm: chest })
+                    });
+                }
+
+                await carregarMedidas();
+                measurementForm.reset();
+            } catch (err) {
+                console.error('Erro ao salvar medida:', err);
+                alert('Não foi possível salvar a medida. Tente novamente.');
+            }
         });
     }
 
-    renderMeasurements();
+    carregarMedidas();
+
+    // Helper: formata YYYY-MM-DD ou ISO datetime para pt-BR dd/mm/yyyy
+    function formatDatePT(d) {
+        if (!d) return '';
+        if (typeof d === 'string' && d.indexOf('-') >= 0) {
+            // split by '-' and take first 3 segments (YYYY,MM,DD...)
+            const parts = d.split('-');
+            if (parts.length >= 3) {
+                // parts[2] pode conter hora (ex: '03T03:00:00.000Z')
+                const dayPart = parts[2].split('T')[0];
+                return `${dayPart}/${parts[1]}/${parts[0]}`;
+            }
+        }
+        // fallback: Date
+        try {
+            const dt = new Date(d);
+            return dt.toLocaleDateString('pt-BR');
+        } catch (e) {
+            return d;
+        }
+    }
+
+    // Carrega histórico de treino para a aba Estatísticas
+    async function loadTrainingHistory() {
+        const ul = document.getElementById('trainingHistory');
+        if (!ul) return;
+        ul.innerHTML = '<li>Carregando histórico...</li>';
+
+        if (!usuario || !usuario.id) {
+            ul.innerHTML = '<li>Usuário não logado.</li>';
+            return;
+        }
+
+        try {
+            // busca todos os exercícios para mapear id -> nome
+            const exResp = await fetch(`${API}/buscaExercicio`);
+            const exercises = exResp.ok ? await exResp.json() : [];
+            const exMap = new Map();
+            exercises.forEach(e => exMap.set(e.id_exercicio, e.nome_exercicio || e.nome_exercicio));
+
+            // busca histórico do usuário
+            const histResp = await fetch(`${API}/buscaHistoricoTreino?id_usuario=${usuario.id}`);
+            if (!histResp.ok) {
+                ul.innerHTML = `<li>Erro ao carregar histórico: ${histResp.status}</li>`;
+                return;
+            }
+            const history = await histResp.json();
+
+            if (!Array.isArray(history) || history.length === 0) {
+                ul.innerHTML = '<li>Nenhum registro de treino encontrado.</li>';
+                return;
+            }
+
+            // ordenar por data desc
+            history.sort((a,b)=> b.dia_historicoTreino.localeCompare(a.dia_historicoTreino) || b.id_historicoTreino - a.id_historicoTreino);
+
+            ul.innerHTML = '';
+            history.forEach(h => {
+                const name = exMap.get(h.id_exercicio) || `Exercício #${h.id_exercicio}`;
+                const date = formatDatePT(h.dia_historicoTreino);
+                const series = h.series_feitas;
+                const reps = h.repeticoes_feitas;
+                const carga = (h.carga_utilizada != null) ? `${h.carga_utilizada}kg` : '';
+                const li = document.createElement('li');
+                li.textContent = `${date} — ${name} — ${series}x${reps} ${carga}`.trim();
+                ul.appendChild(li);
+            });
+        } catch (err) {
+            console.error('Erro ao carregar histórico:', err);
+            ul.innerHTML = '<li>Erro ao carregar histórico.</li>';
+        }
+    }
+
+    loadTrainingHistory();
+
+    // Carrega histórico de alimentação do usuário
+    async function loadFoodHistory() {
+        const ul = document.getElementById('foodHistory');
+        if (!ul) return;
+        ul.innerHTML = '<li>Carregando histórico...</li>';
+
+        if (!usuario || !usuario.id) {
+            ul.innerHTML = '<li>Usuário não logado.</li>';
+            return;
+        }
+
+        try {
+            // busca refeições do usuário (todas)
+            const resp = await fetch(`${API}/buscaRefeicao?id_usuario=${usuario.id}`);
+            if (!resp.ok) {
+                ul.innerHTML = `<li>Erro ao carregar histórico de alimentação: ${resp.status}</li>`;
+                return;
+            }
+            const items = await resp.json();
+            if (!Array.isArray(items) || items.length === 0) {
+                ul.innerHTML = '<li>Nenhuma refeição registrada.</li>';
+                return;
+            }
+
+            // ordenar por data desc
+            items.sort((a,b)=> b.dia_refeicao.localeCompare(a.dia_refeicao) || (b.id_refeicao||0)-(a.id_refeicao||0));
+
+            ul.innerHTML = '';
+            items.forEach(r => {
+                const date = formatDatePT(r.dia_refeicao);
+                const desc = r.descricao_refeicao || '';
+                const li = document.createElement('li');
+                li.textContent = `${date} — ${desc}`;
+                ul.appendChild(li);
+            });
+        } catch (err) {
+            console.error('Erro ao carregar histórico de alimentação:', err);
+            ul.innerHTML = '<li>Erro ao carregar histórico de alimentação.</li>';
+        }
+    }
+
+    loadFoodHistory();
 });
