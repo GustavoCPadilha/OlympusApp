@@ -474,7 +474,8 @@ app.post('/cadastraExercicio', (req, res) => {
 app.post('/cadastraPlanilhaTreino', (req, res) => {
   const { id_usuario, nome_planilhaTreino, data_inicio, ativa_planilhaTreino } = req.body;
 
-  if (!id_usuario || !nome_planilhaTreino || !data_inicio || !ativa_planilhaTreino) {
+  // aceitar valores numéricos 0/1 para ativa_planilhaTreino; checar apenas undefined/null
+  if (id_usuario == null || !nome_planilhaTreino || !data_inicio || ativa_planilhaTreino == null) {
     return res.status(400).json({ error: 'Preencha todos os dados solicitados!' });
   }
 
@@ -586,17 +587,18 @@ app.post('/cadastraMedidaCorporal', (req, res) => {
 app.post('/cadastraPesoCorporal', (req, res) => {
   const { id_usuario, dia_pesoCorporal, peso_pesoCorporal, meta_peso } = req.body;
 
-  if (!id_usuario || !dia_pesoCorporal || !peso_pesoCorporal || !meta_peso) {
-    return res.status(400).json({ error: 'Preencha todos os dados solicitados!' });
+  // aceitar meta_peso = 0 ou null/undefined; checar apenas id_usuario, data, peso como obrigatórios
+  if (!id_usuario || !dia_pesoCorporal || !peso_pesoCorporal) {
+    return res.status(400).json({ error: 'Preencha id_usuario, dia_pesoCorporal e peso_pesoCorporal!' });
   }
 
   const sql = 'INSERT INTO pesoCorporal (id_usuario, dia_pesoCorporal, peso_pesoCorporal, meta_peso) VALUES (?, ?, ?, ?)';
-  db.query(sql, [id_usuario, dia_pesoCorporal, peso_pesoCorporal, meta_peso], (err, result) => {
+  db.query(sql, [id_usuario, dia_pesoCorporal, peso_pesoCorporal, meta_peso || null], (err, result) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
 
-    res.status(201).json({ message: 'Medida corporal registrado com sucesso', id: result.insertId });
+    res.status(201).json({ message: 'Peso corporal registrado com sucesso', id: result.insertId });
   });
 });
 
@@ -668,22 +670,7 @@ app.post('/cadastraPassos', (req, res) => {
   });
 });
 
-// ROTA POST - Cadastro de histórico de treino
-app.post('/cadastraHistoricoTreino', (req, res) => {
-  const { id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada } = req.body;
 
-  if (!id_usuario || !id_exercicio || !dia_historicoTreino || !series_feitas || !repeticoes_feitas || !carga_utilizada) {
-    return res.status(400).json({ error: 'Preencha todos os dados solicitados!' });
-  }
-
-  const sql = 'INSERT INTO historicoTreino (id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada) VALUES (?, ?, ?, ?, ?, ?)';
-  db.query(sql, [id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada], (err, result) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.status(201).json({ message: 'Histórico de treino registrado com sucesso', id: result.insertId });
-  });
-});
 
 // ROTA GET - Buscar exercícios por grupo muscular
 app.get('/exerciciosPorGrupo', (req, res) => {
