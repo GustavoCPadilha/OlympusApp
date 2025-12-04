@@ -146,3 +146,22 @@ td button:active {
 button img {
     width: 27px;
 }
+
+#btn-finalizar-treino {
+    background-color: var(--cor-2);
+    margin-left: 100px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 1.15em;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: .25s ease;
+}
+
+#btn-finalizar-treino:hover {
+    transform: scale(1.02);
+}

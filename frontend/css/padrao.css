@@ -1,15 +1,9 @@
-@font-face {
-    font-family: 'Akira';
-    src: url('../fonts/Akira.otf') format('opentype');
-}
-
 :root {
     --cor-1: #8C030E;
     --cor-2: #8C031C;
     --cor-3: #40010D;
     --cor-4: #260104;
     --cor-5: #0D0D0D;
-    --fonte-principal: 'Akira', sans-serif;
 }
 
 * {
@@ -52,7 +46,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 45px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     z-index: 1000;
 }

@@ -9,7 +9,6 @@ if (!usuario) {
 
 const userId = usuario.id;
 
-// CARREGAR PLANILHAS DO USUÁRIO
 function carregarPlanilhas() {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario || !usuario.id) {

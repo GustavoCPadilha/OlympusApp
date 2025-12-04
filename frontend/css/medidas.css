@@ -37,6 +37,7 @@ main h1 {
     width: 100%;
 }
 
+
 .form-row {
     display: flex;
     flex-wrap: wrap; /* Permite quebrar em linhas em telas pequenas */
@@ -48,6 +49,7 @@ main h1 {
 
 .form-group-medida {
     display: flex;
+    margin-bottom: 10px;
     flex-direction: column;
     align-items: flex-start;
     flex: 1 1 180px; /* Faz os campos serem responsivos */
@@ -56,6 +58,8 @@ main h1 {
 .form-group-medida label {
     max-width: 100%;
     font-weight: 600;
+    min-height: 40px; 
+    display: block;
 }
 
 .form-group-medida input {
