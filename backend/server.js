@@ -184,7 +184,7 @@ app.get('/buscaPassos', (req, res) => {
 
 // Rota GET - Histórico do treino
 app.get('/buscaHistoricoTreino', (req, res) => {
-  const { id_usuario, id_exercicio } = req.query;
+  const { id_usuario, id_exercicio, series_feitas } = req.query;
 
   let sql = 'SELECT * FROM historicoTreino WHERE 1=1';
   let params = [];
@@ -199,10 +199,16 @@ app.get('/buscaHistoricoTreino', (req, res) => {
     params.push(id_exercicio);
   }
 
-  sql += ' ORDER BY dia_historicoTreino ASC, id_historicoTreino ASC';
+  if (series_feitas) {
+    sql += ' AND series_feitas = ?';
+    params.push(series_feitas);
+  }
+
+  sql += ' ORDER BY id_historicoTreino DESC';
 
   db.query(sql, params, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
+    console.log(`[HISTORICO] Retornando ${results.length} registros para Ex: ${id_exercicio}. Último:`, results.length > 0 ? results[0] : 'Nenhum');
     res.json(results);
   });
 });
@@ -362,17 +368,44 @@ app.get('/buscaTreinosDaPlanilha', (req, res) => {
 
 // Rota POST - Cadastrar histórico de treino (usada pelo frontend ao marcar séries)
 app.post('/cadastraHistoricoTreino', (req, res) => {
-  const { id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada } = req.body;
+    const { id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada } = req.body; 
 
-  if (!id_usuario || !id_exercicio || !dia_historicoTreino || !series_feitas || !repeticoes_feitas) {
-    return res.status(400).json({ error: 'Campos obrigatórios ausentes' });
-  }
+    if (!id_usuario || !id_exercicio || !dia_historicoTreino || !series_feitas || !repeticoes_feitas) { 
+        return res.status(400).json({ error: 'Campos obrigatórios ausentes' });
+    }
 
-  const sql = `INSERT INTO historicoTreino (id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada) VALUES (?, ?, ?, ?, ?, ?)`;
-  db.query(sql, [id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada || 0], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.status(201).json({ message: 'Histórico de treino registrado', id: result.insertId });
-  });
+    const sql = `INSERT INTO historicoTreino (id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada) VALUES (?, ?, ?, ?, ?, ?)`;
+    
+    db.query(sql, [id_usuario, id_exercicio, dia_historicoTreino, series_feitas, repeticoes_feitas, carga_utilizada || 0], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: 'Histórico de treino registrado', id: result.insertId });
+    });
+});
+
+// ROTA DELETE - Deletar um registro do histórico de treino por ID
+// Endpoint: DELETE /historicoTreino/:id
+app.delete('/historicoTreino/:id', (req, res) => {
+    const id_historicoTreino = req.params.id;
+
+    if (!id_historicoTreino) {
+        return res.status(400).json({ error: 'ID do histórico de treino é obrigatório' });
+    }
+
+    const sql = `DELETE FROM historicoTreino WHERE id_historicoTreino = ?`;
+    
+    db.query(sql, [id_historicoTreino], (err, result) => {
+        if (err) {
+            console.error(`[ROTA] Erro ao deletar histórico ${id_historicoTreino}:`, err.message);
+            return res.status(500).json({ error: err.message });
+        }
+
+        if (result.affectedRows === 0) {
+            // Se nenhuma linha foi afetada, significa que o ID não existe
+            return res.status(404).json({ error: 'Registro de histórico não encontrado' });
+        }
+
+        res.json({ message: 'Registro do histórico de treino removido com sucesso' });
+    });
 });
 
 // Rota POST - Fazer login
