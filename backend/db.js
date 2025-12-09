@@ -7,7 +7,6 @@ const DB_PASSWORD = '1234';
 const DB_NAME = 'gymapp';
 const DB_PORT = 3306;
 
-// Usar pool é mais resiliente para múltiplas requisições e reconexões
 const pool = mysql.createPool({
   host: DB_HOST,
   user: DB_USER,
