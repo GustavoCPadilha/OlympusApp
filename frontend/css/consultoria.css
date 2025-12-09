@@ -56,7 +56,7 @@ section h2 {
 }
 
 .beneficios li:before {
-    content: '✔️'; /* Ícone de check */
+    content: '✔️';
     font-size: 1.2em;
     color: var(--cor-1);
     font-weight: bold;
@@ -92,7 +92,7 @@ section h2 {
 }
 
 .contato-link.whatsapp {
-    background-color: #25D366; /* Cor do WhatsApp */
+    background-color: #25D366;
 }
 
 .contato-link:hover {
@@ -104,7 +104,6 @@ section h2 {
     background-color: #128C7E;
 }
 
-/* Estilo do Formulário de Contato Rápido */
 #form-contato {
     display: flex;
     flex-direction: column;

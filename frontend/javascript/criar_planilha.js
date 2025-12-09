@@ -1,4 +1,3 @@
-// Script para criar uma planilha usando os exercícios estáticos
 const API = 'http://localhost:3000';
 
 const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -6,9 +5,6 @@ if (!usuario) {
   alert('Você precisa estar logado');
   window.location.href = 'login.html';
 }
-
-// Mesma lista estática usada em exercicios.js
-// STATIC_EXERCISES_START
 
 const STATIC_EXERCISES = {
   peito: [
@@ -94,13 +90,11 @@ async function mapStaticToDbIds() {
       return;
     }
     const rows = await resp.json();
-    // build name -> id map (normalize names)
     const map = new Map();
     rows.forEach(r => {
       if (r.nome_exercicio) map.set(r.nome_exercicio.trim().toLowerCase(), r.id_exercicio);
     });
 
-    // Replace ids in STATIC_EXERCISES when name matches
     Object.keys(STATIC_EXERCISES).forEach(grp => {
       STATIC_EXERCISES[grp].forEach(ex => {
         const key = ex.nome.trim().toLowerCase();
@@ -117,10 +111,8 @@ async function mapStaticToDbIds() {
 }
 
 async function renderAvailable() {
-  // attempt to map to DB ids first
   await mapStaticToDbIds();
 
-  // then render
   listaDiv.innerHTML = '';
   Object.entries(STATIC_EXERCISES).forEach(([grupo, items]) => {
     const gDiv = document.createElement('div');

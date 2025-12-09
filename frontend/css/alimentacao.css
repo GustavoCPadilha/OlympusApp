@@ -2,6 +2,12 @@
     --cor-1: #8C030E;
     --cor-2: #8C031C;
     --cor-3: #40010D;
+
+    --radius-padrao: 8px;
+    --sombra-leve: 0 2px 5px rgba(0,0,0,0.1);
+    --sombra-media: 0 4px 8px rgba(0,0,0,0.2);
+    --cor-fundo-transparente: rgba(255, 255, 255, 0.9);
+    --transicao-padrao: 0.25s ease;
 }
 
 main {
@@ -20,54 +26,57 @@ main h1 {
     text-align: center;
 }
 
-/* Estilizando o contêiner do contador */
 #contador-calorias {
     background-color: var(--cor-2);
     color: white;
     padding: 15px 20px;
-    border-radius: 8px;
+    border-radius: var(--radius-padrao);
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: var(--sombra-media);
     margin-top: 10px;
-    order: -1; /* Coloca o contador acima do formulário e da lista */
+    order: -1;
 }
 
 #contador-calorias span {
     font-size: 1.6em;
     margin-left: 5px;
-    color: #FFE0B2; /* Cor mais clara para o número de destaque */
+    color: #FFE0B2;
 }
 
-/* Estilos específicos para a seção de registro de refeições */
+#registro-refeicao, #lista-refeicoes {
+    background: var(--cor-fundo-transparente);
+    border-radius: var(--radius-padrao);
+    box-shadow: var(--sombra-leve);
+    padding: 20px;
+}
+
 #registro-refeicao {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-#registro-refeicao label {
-    max-width: 100%; /* Ajusta a largura para o layout do formulário */
-}
-
-#registro-refeicao input:not(.input-submit) {
-    max-width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-}
-
+/* Estilo para envolver Label + Input */
 .form-group {
     width: 100%;
     max-width: 330px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+/* Inputs de Texto/Número (Exclui o botão submit) */
+#registro-refeicao input:not(.input-submit) {
+    max-width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .input-submit {
@@ -77,23 +86,23 @@ main h1 {
     cursor: pointer;
     padding: 15px 20px;
     margin-top: 20px;
-    border-radius: 8px;
+    border-radius: var(--radius-padrao);
     font-size: 1.15em;
     font-weight: 700;
     text-transform: uppercase;
-    transition: .25s ease;
+    transition: var(--transicao-padrao);
+    display: block;
+    width: 100%;
+    max-width: 330px;
 }
 
 .input-submit:hover {
+    background-color: var(--cor-3);
     transform: scale(1.01);
 }
 
-/* Estilos para a lista de refeições */
 #lista-refeicoes {
     padding: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 #lista-refeicoes h2 {
@@ -125,6 +134,7 @@ main h1 {
 #refeicoes-dia .info-refeicao {
     font-weight: 500;
     margin-left: 10px;
+    color: #333;
 }
 
 #refeicoes-dia .calorias-refeicao {

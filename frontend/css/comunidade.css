@@ -116,6 +116,6 @@ main h1 {
 }
 
 .faq-resposta.active {
-    max-height: 500px; /* Valor suficiente para acomodar o conteúdo */
+    max-height: 500px;
     padding: 15px;
 }

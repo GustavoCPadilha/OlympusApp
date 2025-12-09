@@ -2,6 +2,13 @@
     --cor-1: #8C030E;
     --cor-2: #8C031C;
     --cor-3: #40010D;
+    
+    --cor-fundo-card: white;
+    --cor-sombra: rgba(0,0,0,0.1);
+    --cor-texto-padrao: #444;
+    
+    --radius-padrao: 8px;
+    --transicao-rapida: 0.25s ease;
 }
 
 main {
@@ -17,7 +24,37 @@ main h1 {
     text-align: center;
 }
 
-/* Layout de Cards (Reutilizado da index.html) */
+/* Estilo Base Unificado para todos os botões com fundo sólido */
+.card button, 
+#form-planilha button[type="submit"], 
+.btn-criar-plano {
+    cursor: pointer;
+    text-align: center;
+    border-radius: var(--radius-padrao);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color var(--transicao-rapida), transform 0.2s;
+    border: none;
+    color: white;
+}
+
+/* Estilo para Botões Grandes de Criação (ACIMA DA LISTA DE PLANILHAS) */
+.btn-criar-plano {
+    display: block;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto 30px auto;
+    padding: 15px;
+    background-color: var(--cor-1);
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.btn-criar-plano:hover {
+    background-color: var(--cor-3);
+    transform: translateY(-2px);
+}
+
 .cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -26,10 +63,10 @@ main h1 {
 }
 
 .card {
-    background: white;
+    background: var(--cor-fundo-card);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    border-radius: var(--radius-padrao);
+    box-shadow: 0 4px 8px var(--cor-sombra); 
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -51,7 +88,7 @@ main h1 {
 }
 
 .card p {
-    color: #444;
+    color: var(--cor-texto-padrao);
     font-size: 0.95em;
     line-height: 1.4;
 }
@@ -64,52 +101,67 @@ main h1 {
     margin-bottom: 5px;
 }
 
+/* Botão padrão do card (Abrir Planilha) */
 .card button {
-    all: unset;
+    all: unset; 
     cursor: pointer;
     margin-top: auto;
     display: block;
-    text-align: center;
     padding: 10px 15px;
     background: var(--cor-2);
+    text-align: center;
     color: white;
     text-decoration: none;
     border-radius: 6px;
     font-weight: 600;
-    transition: .25s ease;
+    transition: var(--transicao-rapida);
 }
 
 .card button:hover {
     background: var(--cor-3);
 }
 
-.btn-criar-plano {
-    display: block;
-    width: 100%;
-    max-width: 350px;
-    margin: 0 auto 30px auto;
-    padding: 15px;
-    background-color: var(--cor-1);
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border: none;
+/* --- ESTILOS PARA OS BOTÕES DE AÇÃO DO CARD (ABRIR E DELETAR) --- */
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.card-actions button:first-child {
+    flex-grow: 1; 
+    margin-top: 0; 
+}
+
+.btn-delete-icon {
+    all: unset;
+    cursor: pointer;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; 
+    height: 40px; 
+    padding: 0;
+
+    background-color: #dc3545;
+    color: white; 
+    font-size: 1.2em;
     border-radius: 6px;
-    font-weight: bold;
-    font-size: 1.1em;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background-color 0.25s ease, transform 0.2s;
 }
 
-.btn-criar-plano:hover {
-    background-color: var(--cor-3);
-    transform: translateY(-2px);
+.btn-delete-icon:hover {
+    background-color: var(--cor-1); 
+    transform: scale(1.05);
 }
 
-/* Styles for criar-planilha.html */
 #form-planilha {
     max-width: 1100px;
     margin: 0 auto;
-    background: #fff;
+    background: var(--cor-fundo-card);
     padding: 18px;
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.06);
@@ -122,20 +174,22 @@ main h1 {
     font-weight: 600;
 }
 
+/* Campos de Input (Unificados) */
 #form-planilha input[type="text"],
 #form-planilha input[type="date"],
 #form-planilha input[type="number"] {
     width: 100%;
     padding: 10px 12px;
     border: 1px solid #e3e3e3;
-    border-radius: 8px;
+    border-radius: var(--radius-padrao);
     margin-top: 6px;
     box-sizing: border-box;
 }
 
+/* Estilos para as caixas de seleção de exercícios */
 #lista-exercicios, #selecionados {
     background: #fafafa;
-    border-radius: 8px;
+    border-radius: var(--radius-padrao);
     padding: 12px;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
     margin-bottom: 14px;
@@ -149,6 +203,8 @@ main h1 {
     font-size: 1em;
     text-transform: capitalize;
 }
+
+/* Botão de seleção de exercício por grupo */
 .grupo button {
     display: inline-block;
     margin: 6px 6px 6px 0;
@@ -161,8 +217,12 @@ main h1 {
     font-weight: 600;
     transition: transform .12s ease, box-shadow .12s ease;
 }
-.grupo button:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.08); }
+.grupo button:hover { 
+    transform: translateY(-3px); 
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08); 
+}
 
+/* Item de exercício selecionado */
 .sel-item {
     display: flex;
     gap: 8px;
@@ -176,34 +236,36 @@ main h1 {
 }
 .sel-item strong { flex: 1 1 auto; margin-right: 12px; }
 .sel-item input { width: 70px; }
+
+/* Botão de remover exercício selecionado */
 .sel-item .btn-remove {
     background: transparent;
     border: 1px solid #ddd;
     padding: 6px 8px;
     border-radius: 6px;
     cursor: pointer;
-    
 }
 
+/* Botão de SUBMIT do formulário (Criar Planilha) */
 #form-planilha button[type="submit"] {
     display: inline-block;
     padding: 12px 18px;
     background: var(--cor-1);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
     margin-top: 8px;
 }
-#form-planilha button[type="submit"]:hover { background: var(--cor-3); transform: translateY(-2px); }
+#form-planilha button[type="submit"]:hover { 
+    background: var(--cor-3); 
+    transform: translateY(-2px); 
+}
 
-/* Two-column layout for larger screens */
 @media (min-width: 900px) {
     #lista-exercicios { width: 62%; display: inline-block; vertical-align: top; }
     #selecionados { width: 34%; display: inline-block; vertical-align: top; margin-left: 2%; }
     #form-planilha { padding: 22px; }
 }
 
-/* Small tweaks for accessibility */
-#form-planilha input:focus, .grupo button:focus, .btn-remove:focus { outline: 3px solid rgba(140,3,28,0.12); }
+#form-planilha input:focus, 
+.grupo button:focus, 
+.btn-remove:focus { 
+    outline: 3px solid rgba(140,3,28,0.12); 
+}

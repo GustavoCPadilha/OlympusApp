@@ -1,4 +1,3 @@
-// Função genérica para alternar visibilidade da senha
 function setupPasswordToggle(passwordId, toggleId) {
     const pwd = document.getElementById(passwordId);
     const toggle = document.getElementById(toggleId);
@@ -278,19 +277,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     carregarMedidas();
 
-    // Helper: formata YYYY-MM-DD ou ISO datetime para pt-BR dd/mm/yyyy
     function formatDatePT(d) {
         if (!d) return '';
         if (typeof d === 'string' && d.indexOf('-') >= 0) {
-            // split by '-' and take first 3 segments (YYYY,MM,DD...)
             const parts = d.split('-');
             if (parts.length >= 3) {
-                // parts[2] pode conter hora (ex: '03T03:00:00.000Z')
                 const dayPart = parts[2].split('T')[0];
                 return `${dayPart}/${parts[1]}/${parts[0]}`;
             }
         }
-        // fallback: Date
         try {
             const dt = new Date(d);
             return dt.toLocaleDateString('pt-BR');

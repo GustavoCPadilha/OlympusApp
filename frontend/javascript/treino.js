@@ -213,7 +213,6 @@ async function desmarcarSerie(linha, img) {
 // 5. FUNÇÃO PARA FINALIZAR TREINO
 // ------------------------------------
 async function finalizarTreino() {
-    // Esta função pode ser simplificada, pois 'registrarSerie' já salva imediatamente.
     
     const errors = document.querySelector('.error-post');
     if (errors) {

@@ -27,6 +27,32 @@ function formatarDataBrasileira(dataString) {
     return `${dia}/${mes}/${ano}`;
 }
 
+async function deletarPlanilha(id_planilha, nome_planilha) {
+    if (!confirm(`Tem certeza que deseja deletar a planilha: "${nome_planilha}"? Esta ação não pode ser desfeita e deletará todos os treinos vinculados.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/planilha/${id_planilha}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert(`Planilha "${nome_planilha}" deletada com sucesso!`);
+            carregarPlanilhas();
+        } else {
+            const errorData = await response.json();
+            alert(`Erro ao deletar planilha: ${errorData.error || response.statusText}`);
+        }
+    } catch (error) {
+        console.error('Erro de rede ao deletar planilha:', error);
+        alert('Erro de conexão com o servidor ao deletar.');
+    }
+}
+
 function carregarPlanilhas() {
     const usuario = JSON.parse(localStorage.getItem("usuario"));
     if (!usuario || !usuario.id) {
@@ -40,6 +66,11 @@ function carregarPlanilhas() {
             const container = document.getElementById("cardsUsuario");
             container.innerHTML = "";
 
+            if (planilhas.length === 0) {
+                 container.innerHTML = '<p>Você não possui nenhuma planilha cadastrada.</p>';
+                 return;
+            }
+
             planilhas.forEach(planilha => {
                 const dataFormatada = formatarDataBrasileira(planilha.data_inicio);
 
@@ -48,9 +79,19 @@ function carregarPlanilhas() {
                         <h3>${planilha.nome_planilhaTreino}</h3>
                         <p>Início: ${dataFormatada}</p>
                         
-                        <button onclick="abrirPlanilha(${planilha.id_planilhaTreino})">
-                            Abrir Planilha
-                        </button>
+                        <div class="card-actions">
+                            <button onclick="abrirPlanilha(${planilha.id_planilhaTreino})">
+                                Abrir Planilha
+                            </button>
+                            
+                            <button 
+                                onclick="deletarPlanilha(${planilha.id_planilhaTreino}, '${planilha.nome_planilhaTreino}')"
+                                class="btn-delete-icon" 
+                                title="Deletar Planilha"
+                            >
+                                🗑️
+                            </button>
+                        </div>
                     </div>
                 `;
             });
